@@ -8,7 +8,7 @@ class TOTP:
     self.secret = secret
     self.interval = 30
 
-  def generate(self):
+  def generate_otp(self):
     """Generates a TOTP for the given secret."""
     interval = int(time.time()) // self.interval
     secret_bytes = base64.b32decode(self.secret)
@@ -21,7 +21,7 @@ class TOTP:
             (h[offset + 3] & 0xff))
     return str(code % 10**6).zfill(6)
 
-  def verify(self, otp):
+  def verify_top(self, otp):
     """Verifies a TOTP for the given secret."""
     for i in [-1, 0, 1]:
       if self.generate(interval=int(time.time()) // self.interval + i) == otp:
