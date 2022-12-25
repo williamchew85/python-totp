@@ -5,7 +5,15 @@ This code uses the hmac and hashlib libraries to generate a TOTP based on the cu
 
 You will need to replace the secret with a secret that is shared between the server and the client (e.g. a user's phone number). You can then use the generate_otp() function to generate an OTP and send it to the user, and use the verify_otp() function to verify the OTP when it is entered by the user.
 
-#send_totp.py
+# send_totp.py
 This code uses the smtplib library to send an email using the Simple Mail Transfer Protocol (SMTP). It generates a TOTP using the generate_otp() function from the previous example, and includes the OTP in the body of the email.
 
 You will need to replace the smtp.example.com with the address of your SMTP server, and replace the sender and receiver variables with the appropriate email addresses.
+
+# secret
+The secret variable in the TOTP code examples is a shared secret that is used to generate and verify one-time passwords (OTPs). It is a string of characters that is known to both the server (which generates the OTPs) and the client (which verifies the OTPs).
+
+In order to use the secret variable, you will need to first generate a secret and share it with the client. There are several ways you can do this, such as sending the secret via SMS or email, or generating a QR code that can be scanned by the client to set up their TOTP app with the secret.
+
+Once the secret has been shared with the client, you can use it to generate and verify OTPs. For example, you can use the generate_otp() function from the previous example to generate an OTP based on the secret and the current time interval. You can then send the OTP to the client (e.g. via SMS or email), and the client can use the verify_otp() function to verify that the OTP is correct.
+
