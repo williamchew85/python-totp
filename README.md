@@ -18,6 +18,12 @@ In order to use the secret variable, you will need to first generate a secret an
 Once the secret has been shared with the client, you can use it to generate and verify OTPs. For example, you can use the generate_otp() function from the previous example to generate an OTP based on the secret and the current time interval. You can then send the OTP to the client (e.g. via SMS or email), and the client can use the verify_otp() function to verify that the OTP is correct.
 
 # totp.py
-This code imports the TOTP class from the totp module and creates a TOTP object with the secret passed from Node.js. 
-It then calls the generate() method on the totp object to generate the OTP, and prints the OTP to stdout.
-Make sure that the totp.py script is in the same directory as the totp.py module that contains the TOTP class, or that the module is importable from the sys.path in the totp.py script.import json
+This code reads the email value from stdin, generates the secret value using the generate_secret() function (which you will need to implement), creates a TOTP object with the secret, and generates the OTP using the generate() method. It then prints the OTP to stdout.
+
+Make sure that the totp.py script is in the same directory as the totp.py module that contains the TOTP class, or that the module is importable from the sys.path in the totp.py script.
+
+generate_secret() function uses the sha256 hashing algorithm from the hashlib library to generate a unique secret for the given email address. It encodes the email address as a bytes object before hashing it, and returns the hashed value as a hexadecimal string.
+
+You can use this function to generate a secret for the email address passed from the Node.js backend, and use the secret to generate the OTP using the TOTP class.
+
+Keep in mind that this is just one way of generating a unique secret for an email address. There are many other methods you could use, such as using a database to store the secrets and look them up based on the email address, or using a more secure hashing algorithm such as pbkdf2_hmac.
