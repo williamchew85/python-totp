@@ -1,3 +1,6 @@
+//This code spawns a Python process and runs the totp.py script. 
+// It sends the abcdefg secret and the generate method name to the script using the stdin stream, and receives the OTP from the script using the stdout stream.
+
 const { spawn } = require('child_process');
 
 const python = spawn('python', ['path/to/totp.py']);
