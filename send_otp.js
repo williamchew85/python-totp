@@ -1,22 +1,35 @@
-//This code spawns a Python process and runs the totp.py script. 
-// It sends the abcdefg secret and the generate method name to the script using the stdin stream, and receives the OTP from the script using the stdout stream.
-
+// This code creates an Express.js server that listens for POST requests to the /send-email endpoint. When a request is received, it extracts the email value from the request body and spawns a Python process to run the totp.py script. It sends the email value to
+const express = require('express');
 const { spawn } = require('child_process');
 
-const python = spawn('python', ['path/to/totp.py']);
+const app = express();
 
-// Send the secret and method name to the Python script
-python.stdin.write(JSON.stringify({ secret: 'abcdefg', method: 'generate' }));
-python.stdin.end();
+app.use(express.json());
 
-python.stdout.on('data', (data) => {
-  console.log(`OTP: ${data}`);
+app.post('/send-email', (req, res) => {
+  const { email } = req.body;
+
+  const python = spawn('python', ['path/to/totp.py']);
+
+  // Send the email to the Python script
+  python.stdin.write(JSON.stringify({ email }));
+  python.stdin.end();
+
+  python.stdout.on('data', (data) => {
+    console.log(`OTP: ${data}`);
+  });
+
+  python.stderr.on('data', (data) => {
+    console.error(`stderr: ${data}`);
+  });
+
+  python.on('close', (code) => {
+    console.log(`child process exited with code ${code}`);
+  });
+
+  res.send({ message: 'Email sent!' });
 });
 
-python.stderr.on('data', (data) => {
-  console.error(`stderr: ${data}`);
-});
-
-python.on('close', (code) => {
-  console.log(`child process exited with code ${code}`);
+app.listen(3000, () => {
+  console.log('Server listening on port 3000');
 });
